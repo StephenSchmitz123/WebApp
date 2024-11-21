@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        nodejs 'NodeJS 23.3.0'  // Use the version configured in Global Tool Configuration
+        nodejs 'NodeJS'
     }
     stages {
         stage('Install Dependancies') {
