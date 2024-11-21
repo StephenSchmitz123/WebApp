@@ -10,7 +10,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                'npm run build'
+                sh 'npm run build'
             }
         }
 
@@ -22,7 +22,7 @@ pipeline {
         
         stage('Linting Checks') {
             steps {
-                'npm run lint'
+                sh 'npm run lint'
             }
         }
     }
