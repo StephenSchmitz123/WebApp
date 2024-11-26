@@ -7,8 +7,7 @@ pipeline {
         EC2_HOST = 'ec2-54-173-231-27.compute-1.amazonaws.com'  // Replace with your actual EC2 public IP or DNS
     }
     stages {
-        stage
-         ('Test code') {
+        stage ('Test code') {
             steps {
                 sh 'npm run test'
             }
