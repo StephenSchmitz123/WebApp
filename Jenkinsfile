@@ -45,8 +45,8 @@ pipeline {
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY_PATH', usernameVariable: 'SSH_USERNAME')]) {
                     sh '''
                         # Get Archived code into ec2
-                        scp -i $SSH_KEY_PATH app.zip ec2-user@$EC2_HOST:/tmp/
-
+                        scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH app.zip ec2-user@ec2-54-173-231-27.compute-1.amazonaws.com:/tmp/
+                        
                         ssh -i $SSH_KEY_PATH ec2-user@$EC2_HOST << 'EOF'
 
                         # Deploy code to EC2
