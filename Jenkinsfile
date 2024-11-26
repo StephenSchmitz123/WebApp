@@ -7,9 +7,16 @@ pipeline {
         EC2_HOST = 'ec2-54-173-231-27.compute-1.amazonaws.com'  // Replace with your actual EC2 public IP or DNS
     }
     stages {
+        stage('Install Dependancies') {
+            steps {
+                echo 'Building...'
+                sh 'npm install'
+            }
+        }
+
         stage ('Test code') {
             steps {
-                sh 'npx jest'
+                sh 'npm run test'
             }
         }
 
