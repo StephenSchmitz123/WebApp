@@ -5,7 +5,6 @@ pipeline {
     }
     environment {
         EC2_HOST = 'ec2-54-173-231-27.compute-1.amazonaws.com'  // Replace with your actual EC2 public IP or DNS
-        SSH_KEY_PATH = '/Users/stephen.schmitz2/Documents/Coding/terraform/3-Tier Web App/ec2/private-key-pair-one.pem'  // Path to your private key (absolute path)
     }
     stages {
         stage
