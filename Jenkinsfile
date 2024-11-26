@@ -34,7 +34,7 @@ pipeline {
 
         stage ('Archive code') {
             steps {
-                sh 'zip -r app.zip .next'
+                sh 'zip -r app.zip . -x "node_modules/*"'
                 archiveArtifacts artifacts: 'app.zip', fingerprint: true
             }
             
@@ -46,19 +46,19 @@ pipeline {
                     sh '''
                         # Get Archived code into ec2
                         scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH app.zip ec2-user@ec2-54-173-231-27.compute-1.amazonaws.com:/tmp/
-                        
-                        ssh -i $SSH_KEY_PATH ec2-user@$EC2_HOST << 'EOF'
 
-                        # Deploy code to EC2
-                        unzip -o /tmp/app.zip -d /home/ec2-user/app
+                        ssh -i $SSH_KEY_PATH ec2-user@$EC2_HOST << EOF
 
-                        # Go to App
-                        cd /home/ec2-user/app
+                            # Deploy code to EC2
+                            unzip -o /tmp/app.zip -d /home/ec2-user/app
 
-                        # Install dependancies and save
-                        npm install   
-                        pm2 start npm --name "next-app" --start
-                        pm2 save // auto start app on reboot
+                            # Go to App
+                            cd /home/ec2-user/app
+
+                            # Install dependancies and save
+                            npm install   
+                            pm2 start npm --name "next-app" -- run start
+                            pm2 save
 
                         EOF
                     '''
