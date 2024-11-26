@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools { 
-        nodejs "NodeJS"
+        nodejs 'NodeJS'
     }
     environment {
         EC2_HOST = 'ec2-54-173-231-27.compute-1.amazonaws.com'  // Replace with your actual EC2 public IP or DNS
@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage ('Test code') {
             steps {
-                sh 'npm run test'
+                sh 'npx jest'
             }
         }
 
