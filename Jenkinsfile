@@ -34,7 +34,7 @@ pipeline {
 
         stage ('Archive code') {
             steps {
-                sh 'zip -r app.zip . -x "node_modules/*" ".git/*'
+                sh 'zip -r app.zip . -x "node_modules/*" ".git/*"'
                 archiveArtifacts artifacts: 'app.zip', fingerprint: true
             }
             
