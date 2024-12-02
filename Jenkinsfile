@@ -49,6 +49,12 @@ pipeline {
 
                         ssh -i $SSH_KEY_PATH ec2-user@$EC2_HOST
 
+                        # Install npm and pm2
+                        sudo yum install -y nodejs
+                        npm -v
+                        sudo npm install pm2@latest -g --no-save
+                        pm2 -v
+
                         # Deploy code to EC2 
                         unzip -o /tmp/app.zip -d /home/ec2-user/app
 
@@ -56,7 +62,8 @@ pipeline {
                         cd /home/ec2-user/app
 
                         # Install dependancies and save
-                        npm install   
+                        npm install next@latest
+                        npm install
                         pm2 start npm --name "next-app" -- run start
 
                         # ensures processes are restored after restart/reboot
