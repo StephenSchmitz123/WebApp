@@ -34,7 +34,7 @@ pipeline {
 
         stage ('Archive code') {
             steps {
-                sh 'zip -r app.zip . -x "node_modules/*" ".git/*"'
+                sh 'zip -r app.zip . -x ".git/*"'
                 archiveArtifacts artifacts: 'app.zip', fingerprint: true
             }
             
@@ -49,8 +49,8 @@ pipeline {
 
                         ssh -i $SSH_KEY_PATH ec2-user@$EC2_HOST
 
-                        # Deploy code to EC2
-                        sudo -u ec2-user unzip -o /tmp/app.zip -d /home/ec2-user/app
+                        # Deploy code to EC2 
+                        unzip -o /tmp/app.zip -d /home/ec2-user/app
 
                         # Go to App
                         cd /home/ec2-user/app
