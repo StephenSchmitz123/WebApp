@@ -50,7 +50,7 @@ pipeline {
                         ssh -i $SSH_KEY_PATH ec2-user@$EC2_HOST
 
                         # Deploy code to EC2
-                        unzip -o /tmp/app.zip -d /home/ec2-user/app
+                        sudo -u ec2-user unzip -o /tmp/app.zip -d /home/ec2-user/app
 
                         # Go to App
                         cd /home/ec2-user/app
