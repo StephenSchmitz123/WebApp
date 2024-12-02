@@ -45,7 +45,7 @@ pipeline {
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY_PATH', usernameVariable: 'SSH_USERNAME')]) {
                     sh '''
                         # Get Archived code into ec2
-                        scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH app.zip ec2-user@ec2-54-173-231-27.compute-1.amazonaws.com:/tmp/
+                        scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH app.zip ec2-user@$EC2_HOST:/tmp/
 
                         ssh -i $SSH_KEY_PATH ec2-user@$EC2_HOST
 
@@ -58,7 +58,9 @@ pipeline {
                         # Install dependancies and save
                         npm install   
                         pm2 start npm --name "next-app" -- run start
-                        pm2 save
+
+                        # ensures processes are restored after restart/reboot
+                        pm2 save 
                     '''
                 }
             }
