@@ -51,7 +51,6 @@ pipeline {
                         ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ec2-user@$EC2_HOST 
                         
                         # Unzips to app directory 
-                        mkdir -p /home/ec2-user/app 
                         unzip -o /tmp/app.zip -d /home/ec2-user/app
                         cd /home/ec2-user/app
                         
