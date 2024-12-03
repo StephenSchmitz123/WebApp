@@ -45,7 +45,7 @@ pipeline {
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY_PATH', usernameVariable: 'SSH_USERNAME')]) {
                     sh '''
                         ssh -i $SSH_KEY_PATH ec2-user@$EC2_HOST '
-                            scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH app.zip ec2-user@$EC2_HOST:/tmp/app.zip
+                            scp -o StrictHostKeyChecking=no -i app.zip /tmp/app.zip &&
                             ls -l /tmp/app.zip &&
                             chmod 644 /tmp/app.zip &&
                             mkdir -p /home/ec2-user/app &&
