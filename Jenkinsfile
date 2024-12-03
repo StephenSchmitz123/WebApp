@@ -44,28 +44,18 @@ pipeline {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY_PATH', usernameVariable: 'SSH_USERNAME')]) {
                     sh '''
-                        # Get Archived code into ec2
-                        scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH app.zip ec2-user@$EC2_HOST:/tmp/app.zip
-
-                        ssh -i $SSH_KEY_PATH ec2-user@$EC2_HOST
-
-                        while [ ! -f /tmp/app.zip ]; do
-                            sleep 1
-                        done
-
-                        # Deploy code to EC2 
-                        unzip -o /tmp/app.zip -d /home/ec2-user/app
-
-                        # Go to App
-                        cd ~/home/ec2-user/app
-
-                        # Install dependancies and save
-                        npm install next@latest
-                        npm install
-                        pm2 start npm --name "next-app" -- run start
-
-                        # ensures processes are restored after restart/reboot
-                        pm2 save 
+                        ssh -i $SSH_KEY_PATH ec2-user@$EC2_HOST '
+                            scp -o StrictHostKeyChecking=no -i $SSH_KEY_PATH app.zip ec2-user@$EC2_HOST:/tmp/app.zip
+                            ls -l /tmp/app.zip &&
+                            chmod 644 /tmp/app.zip &&
+                            mkdir -p /home/ec2-user/app &&
+                            unzip -o /tmp/app.zip -d /home/ec2-user/app &&
+                            cd ~/home/ec2-user/app &&
+                            npm install next@latest &&
+                            npm install &&
+                            pm2 start npm --name "next-app" -- run start &&
+                            pm2 save 
+                        '
                     '''
                 }
             }
