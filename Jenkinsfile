@@ -55,7 +55,7 @@ pipeline {
                             npm install --legacy-peer-deps &&
                             npm install next@latest --save-dev &&
                             npm run build &&
-                            pm2 start npm --name "next-app" -- run start &&
+                            pm2 start node_modules/.bin/next --name "next-app" -- run start &&
                             pm2 save
                         '
                     '''
