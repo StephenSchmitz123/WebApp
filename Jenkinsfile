@@ -56,10 +56,11 @@ pipeline {
                         pm2 -v
 
                         # Deploy code to EC2 
+                        cd ../../
                         unzip -o /tmp/app.zip -d /home/ec2-user/app
 
                         # Go to App
-                        cd /home/ec2-user/app
+                        cd ~/home/ec2-user/app
 
                         # Install dependancies and save
                         npm install next@latest
