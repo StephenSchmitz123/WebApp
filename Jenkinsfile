@@ -49,13 +49,10 @@ pipeline {
 
                         # SSH into EC2 and execute the deployment commands
                         ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ec2-user@$EC2_HOST '
-                            set -e &&
-                            ls -l /tmp/app.zip && 
                             mkdir -p /home/ec2-user/app && 
                             unzip -o /tmp/app.zip -d /home/ec2-user/app &&
                             cd /home/ec2-user/app &&
-                            npm install &&
-                            npm run build &&
+                            npm install --legacy-peer-deps &&
                             pm2 start npm --name "next-app" -- run start &&
                             pm2 save
                         '
