@@ -49,8 +49,11 @@ pipeline {
 
                         ssh -i $SSH_KEY_PATH ec2-user@$EC2_HOST
 
+                        chmod 644 /tmp/app.zip;
+                        chmod -R 755 /home/ec2-user/app;
+
                         # Deploy code to EC2 
-                        cd ../../
+                        
                         unzip -o /tmp/app.zip -d /home/ec2-user/app
 
                         # Go to App
