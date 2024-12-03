@@ -53,7 +53,7 @@ pipeline {
                             unzip -o /tmp/app.zip -d /home/ec2-user/app &&
                             cd /home/ec2-user/app &&
                             npm install --legacy-peer-deps &&
-                            npm install next --no-save &&
+                            npm install next@latest --save-dev &&
                             npm run build &&
                             pm2 start npm --name "next-app" -- run start &&
                             pm2 save
