@@ -34,7 +34,7 @@ pipeline {
 
         stage ('Archive code') {
             steps {
-                sh 'zip -r app.zip . .next/*'
+                sh 'zip -r app.zip .'
                 archiveArtifacts artifacts: 'app.zip', fingerprint: true
             }
             
@@ -54,7 +54,6 @@ pipeline {
                             mkdir -p /home/ec2-user/app && 
                             unzip -o /tmp/app.zip -d /home/ec2-user/app &&
                             cd /home/ec2-user/app &&
-                            npm install next &&
                             npm install &&
                             npm run build &&
                             pm2 start npm --name "next-app" -- run start &&
