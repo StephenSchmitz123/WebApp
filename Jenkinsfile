@@ -49,12 +49,6 @@ pipeline {
 
                         ssh -i $SSH_KEY_PATH ec2-user@$EC2_HOST
 
-                        # Install npm and pm2
-                        sudo yum install -y nodejs
-                        npm -v
-                        sudo npm install pm2@latest -g --no-save
-                        pm2 -v
-
                         # Deploy code to EC2 
                         cd ../../
                         unzip -o /tmp/app.zip -d /home/ec2-user/app
