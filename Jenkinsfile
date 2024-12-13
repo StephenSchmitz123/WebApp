@@ -4,7 +4,7 @@ pipeline {
         nodejs 'NodeJS'
     }
     environment {
-        EC2_HOST = 'ec2-54-198-243-129.compute-1.amazonaws.com'  // Replace with your actual EC2 public IP or DNS
+        EC2_HOST = 'ec2-54-221-244-82.compute-1.amazonaws.com'  // Replace with your actual EC2 public IP or DNS
     }
     stages {
         stage('Install Dependancies') {
