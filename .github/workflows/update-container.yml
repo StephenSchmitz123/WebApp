@@ -1,0 +1,35 @@
+name: Update Container Image in ECR
+
+on:
+  push: 
+    branches:
+      - main
+
+jobs:
+  update-container:
+    runs-on: ubuntu-latest
+
+
+    steps:
+      # Allows Github to use Codebase
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Builds New Docker Image Locally
+      - name: Build Docker Image
+        run: | 
+          docker build -t nextjs-docker .
+          docker tag nextjs-docker ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
+
+      # Login to Amazon ECR
+      - name: Login to Amazon ECR
+        id: login-ecr
+        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
+
+      # Pushes new Docker Image to ECR Repository
+      - name: Push Docker image to ECR
+        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
+
+      # Updates ECS Service with new Docker Image
+      - name: Update ECS service
+        run: aws ecs update-service --cluster ${{ secrets.ECS_CLUSTER }} --service ${{ secrets.ECS_SERVICE }} --force-new-deployment
