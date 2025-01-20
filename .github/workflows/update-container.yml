@@ -9,7 +9,6 @@ jobs:
   update-container:
     runs-on: ubuntu-latest
 
-
     steps:
         # Allows Github to use Codebase
       - name: Checkout code
@@ -23,16 +22,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+        # Login to Amazon ECR
+      - name: Login to Amazon ECR
+        id: login-ecr
+        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
+
       # Builds New Docker Image Locally
       - name: Build Docker Image
         run: | 
           docker build -t nextjs-docker .
-          docker tag nextjs-docker ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
-
-      # Login to Amazon ECR
-      - name: Login to Amazon ECR
-        id: login-ecr
-        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
+          docker tag nextjs-docker:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
 
       # Pushes new Docker Image to ECR Repository
       - name: Push Docker image to ECR
